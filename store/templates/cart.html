@@ -1,0 +1,123 @@
+{% extends 'base.html' %} {% load cart %} {% block title %} UNT Foodies | Cart {% endblock %} {% block content %}
+<div class="container mt-5">
+    <div class="row mt-5">
+        {% if request.session.cart %}
+        <h1 class="font-weight-light alert-info">List of Items Cart </h1>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>S.no</th>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Actions</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in allProduct %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><img height="80px" width="100px" src="{{ product.image.url }}" alt=""></td>
+                    <td>{{ product.name }}</td>
+                    <td>{{ product.price }}&#8364;</td>
+                    <td>{{ product|cart_quantity:request.session.cart }}</td>
+                    <td>
+                        <a href="cart?increase={{ product.id }}" class="btn btn-sm btn-warning">+</a>
+                        <a href="cart?decrease={{ product.id }}" class="btn btn-sm btn-danger">-</a>
+                    </td>
+                    <th>{{ product|price_subtotal:request.session.cart }}&#8364;</th>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                    <td colspan="1"><strong>Total : </strong></td>
+                    <td>{{ allProduct|price_total:request.session.cart }}&#8364;</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <hr>
+    <div class="float-right">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-success btn-lg" data-toggle="modal" data-target="#exampleModalCenter">
+            Checkout
+        </button>
+
+
+
+        <!-- add two buttons -->
+
+
+
+        <!-- end add two buttons -->
+    </div>
+    {% else %}
+    <h1 class="font-weight-light text-center">No cart added</h1>
+    {% endif %}
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">CART PAGE</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+
+
+                    <center>
+                        <button><a href="{% url 'Pickup' %}"  class="btn btn-info">PICKUP</a></button>
+                        <button><a href="{% url 'Delivery' %}" class="btn btn-primary">DELIVERY</a></button>
+                    </center>
+                </div>
+
+
+
+
+
+                <!-- <div class="modal-body">
+                    <form action="/checkout" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="address">Time</label>
+                            <input name="address" type="time" class="form-control" id="address" placeholder="Enter address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input name="phone" type="number" class="form-control" id="phone" placeholder="Enter phone" required>
+                        </div>
+
+
+
+
+                        <div class="bt-group">
+                            <input type="submit" value="Submit" id="myFunction" class=" btn btn-success ">
+                            <input type="reset " value="Cancel " class="btn btn-outline-warning ">
+                        </div>
+                    </form> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+<script>
+    function myFunction() {
+        alert("Order is Delivered To Your Locaton Check it ... ");
+    }
+</script>
+{% endblock %}
